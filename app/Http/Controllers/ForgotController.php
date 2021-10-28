@@ -28,7 +28,7 @@ class ForgotController extends Controller
                 'token'=>$token
             ]);
 
-            Mail::send('Mail.forgot', ['token'=>$token], function ($message) use ($email) {
+            Mail::send('mails.forgot', ['token'=>$token], function ($message) use ($email) {
                 $message->to($email);
                 $message->subject('Reset password');
             });
