@@ -17,8 +17,7 @@ class ForgotController extends Controller
     {
         $email = $request->input('email');
         if (!User::where('email', '$email')->doesntExist()) {
-            return response([
-                'message'=>'User doesn\'t exist in the users table'
+            return response(['message'=>'User doesn\'t exist in the users table'
             ], status:400);
         }
         $token = Str::random(10);
@@ -33,37 +32,28 @@ class ForgotController extends Controller
                 $message->subject('Reset password');
             });
 
-            return response([
-                'message'=>'Check your email'
-            ]);
+            return response(['message'=>'Check your email']);
         } catch (\Exception $exception) {
-            return response([
-                'message'=>$exception->getMessage()
-            ], status:400);
+            return response(['message'=>$exception->getMessage()], status:400);
         }
     }
 
     public function reset(ResetRequest $resetRequest)
     {
         $token = $resetRequest->input('token');
-        if (!$passResset = DB::table('password_resets')->where('token', $token)->first()) {
-            return response([
-                'message'=>'Invalid token'
-            ], status:400);
+        $resetPassword = DB::table('password_resets')->where('token', $token)->first();
+        if (!$resetPassword) {
+            return response(['message'=>'Invalid token'], status:400);
         }
 
         /** @var User $user */
-        if (!$user = User::where('email', $passResset->email)->first()) {
-            return response([
-            'message'=>'User doesn\'t exist'
-        ], status:404);
+        if (!$user = User::where('email', $resetPassword->email)->first()) {
+            return response(['message'=>'User doesn\'t exist'], status:404);
         }
 
         $user->password = Hash::make($resetRequest->input('password'));
         $user->save();
 
-        return response([
-            'message'=>'success'
-        ]);
+        return response(['message'=>'success']);
     }
 }

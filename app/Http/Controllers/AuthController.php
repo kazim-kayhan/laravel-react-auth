@@ -10,6 +10,25 @@ use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
+    public function user()
+    {
+        return Auth::user();
+    }
+    
+    public function register(RegisterRequest $registerRequest)
+    {
+        try {
+            $user = User::create([
+            'name'=>$registerRequest->input('name'),
+            'email'=>$registerRequest->input('email'),
+            'password'=>Hash::make($registerRequest->input('password'))
+            ]);
+            return $user;
+        } catch (\Exception $exception) {
+            return response(['message'=>$exception->getMessage()], status:400);
+        }
+    }
+
     public function login(Request $request)
     {
         try {
@@ -24,33 +43,8 @@ class AuthController extends Controller
                 ]);
             }
         } catch (\Exception $exception) {
-            return response([
-                'message'=>$exception->getMessage()
-            ], status:400);
+            return response(['message'=>$exception->getMessage()], status:400);
         }
-        return response([
-            'message'=>'Invalid username/password'
-        ], status:401);
-    }
-
-    public function user()
-    {
-        return Auth::user();
-    }
-
-    public function register(RegisterRequest $request)
-    {
-        try {
-            $user = User::create([
-            'name'=>$request->input('name'),
-            'email'=>$request->input('email'),
-            'password'=>Hash::make($request->input('password'))
-            ]);
-            return $user;
-        } catch (\Exception $exception) {
-            return response([
-            'message'=>$exception->getMessage()
-        ], status:400);
-        }
+        return response(['message'=>'Invalid username/password'], status:401);
     }
 }
