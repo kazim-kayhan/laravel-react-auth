@@ -10,11 +10,6 @@ use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-    public function user()
-    {
-        return Auth::user();
-    }
-    
     public function register(RegisterRequest $registerRequest)
     {
         try {
@@ -46,5 +41,10 @@ class AuthController extends Controller
             return response(['message'=>$exception->getMessage()], status:400);
         }
         return response(['message'=>'Invalid username/password'], status:401);
+    }
+
+    public function user()
+    {
+        return Auth::user();
     }
 }
