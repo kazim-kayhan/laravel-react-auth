@@ -18,6 +18,6 @@ use App\Http\Controllers\ForgotController;
 
 Route::post('login', [AuthController::class,'login']);
 Route::post('register', [AuthController::class,'register']);
-Route::post('forgot', [ForgotController::class,'forgot']);
-Route::post('reset', [ForgotController::class,'reset']);
+// Route::post('forgot', [ForgotController::class,'forgot']);
+// Route::post('reset', [ForgotController::class,'reset']);
 Route::get('user', [AuthController::class,'user']);
