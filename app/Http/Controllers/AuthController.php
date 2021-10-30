@@ -31,11 +31,7 @@ class AuthController extends Controller
                 /** @var User $user */
                 $user = Auth::user();
                 $token = $user->createToken('app')->accessToken;
-                return response([
-                    'message'=>'success',
-                    'token'=>$token,
-                    'user'=>$user
-                ]);
+                return response(['message'=>'success','token'=>$token,'user'=>$user]);
             }
         } catch (\Exception $exception) {
             return response(['message'=>$exception->getMessage()], status:400);
